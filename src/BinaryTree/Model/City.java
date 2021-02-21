@@ -1,9 +1,8 @@
-package BinaryTree;
+package BinaryTree.Model;
 
 public class City {
     private String name;
     private int distance;
-
 
     public City(String name, int distance) {
         this.name = name;

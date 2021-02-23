@@ -3,66 +3,61 @@ package BinaryTree.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @version  1.2
+ * @author PatrickVincentHoestroem
+ *
+ * A class for converting index numbers to xls column letters and back again.
+ *
+ * (See test section for numerical notation of column index calculation and runtime examples).
+ */
+
 public class ColumnLettering {
-    private int repetitions;
+    private final char[] alphabet = new char[26];
     private List<String> list;
 
     public ColumnLettering() {
-        this.repetitions = 0;
+        list = new ArrayList<>();
+        for (char a = 'A'; a <= 'Z'; a++) {
+            alphabet[Character.getNumericValue(a)-10] = a;
+        }
         this.generate();
     }
 
-    private void generate() {
-        list = new ArrayList<>();
-        for (int i = 0; i <= repetitions; i++) {
-            site(i);
+    private List<String> generate() {
+        for (int i = 0; i < alphabet.length; i++) {
+            list.add(String.valueOf(alphabet[i]));
         }
-    }
 
-    private void site(int increment) {
-        String character = "";
-        for (char alphabet = 'A'; alphabet <= 'Z'; alphabet++) {
-            character = "";
-            for (int i = 0; i <= increment; i++) {
-                character += alphabet;
+        String letters = "";
+        while (true) {
+            for (char i: alphabet) {
+                for (char j: alphabet) {
+                    letters = "" + i + j;
+                    list.add(letters);
+                    if (letters.equals("IV")) {
+                        return list;
+                    } else {
+                        letters = "";
+                    }
+                }
             }
-            list.add(character);
         }
     }
 
     public String getLetter(int index) {
-        try {
-            return list.get(index);
-        } catch (IndexOutOfBoundsException e) {
-            this.repetitions += 1;
-            this.generate();
-            return this.getLetter(index);
-        }
-    }
-
-    private int numberCounter(String letters, int stackCount, int repetitionsLimit) {
-        try {
-            while (repetitions < repetitionsLimit) {
-                String listLetter = list.get(stackCount);
-                if (listLetter.equals(letters)) {
-                    return stackCount;
-                } else {
-                    stackCount += 1;
-                }
-            }
-        } catch (IndexOutOfBoundsException e) {
-            this.repetitions += 1;
-            this.generate();
-            return numberCounter(letters, stackCount, repetitionsLimit);
-        }
-        throw new IllegalArgumentException("Stack limit '" + stackCount + "' exceeded. could not find '" + letters + "' in generated columns letters. If your searched letters exceed 5 in length, try and notch the repetitionsLimit parameter.");
+        return list.get(index);
     }
 
     public int getNumber(String letters) {
-        return numberCounter(letters, 0, 5);
+
+        for (int i = 0; i < list.size(); i++) {
+            if (letters.equals(list.get(i))) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
-    public int getNumber(String letters, int repetitionsLimit) {
-        return numberCounter(letters, 0, repetitionsLimit);
-    }
 }

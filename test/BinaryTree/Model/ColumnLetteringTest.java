@@ -15,38 +15,56 @@ class ColumnLetteringTest {
 
     @Test
     public void getLetter() {
+        /**
+         * The numerical notation for predicting indexes of column letters go as follows:
+         *
+         * For single letter columns get index 0-25 where index 0="A" and index 25="Z".
+         */
         assertEquals("A", columnLettering.getLetter(0));
-        assertEquals("AA", columnLettering.getLetter(26));
-        assertEquals("AAA", columnLettering.getLetter(26*2));
-        assertEquals("AAAA", columnLettering.getLetter(26*3));
-        assertEquals("AAAAA", columnLettering.getLetter(26*4));
-        System.out.println(columnLettering.getLetter(27));
+        assertEquals("Z", columnLettering.getLetter(25));
+
+        /**
+         * Dual-letter columns are to be calculated with initial value 'a', 'b' that is determinate of the first
+         * letter, and 'c' that is determinate of BOTH the first and second letter.
+         *
+         * a = 26
+         * b = not 0 or negative
+         * c = can be any number
+         * This provides the formula (a*b+-c) where 'a' is 26 and 'b' cannot be 0 or negative.
+         *
+         * Simply multiplying 'a' with 'b' produces a step on first letter.
+         */
+        assertEquals("AA", columnLettering.getLetter(26)); // or 26*1
+        assertEquals("BA", columnLettering.getLetter(26*2));
+        assertEquals("CA", columnLettering.getLetter(26*3));
+        assertEquals("DA", columnLettering.getLetter(26*4));
+
+        /**
+         * Adding or subtracting the 'a'(*'b') by 'c' value produces a step of the last letter, potentially
+         * also forcing the first letter.
+         */
+        assertEquals("AB", columnLettering.getLetter(26+1)); // or 26*1+1
+        assertEquals("BB", columnLettering.getLetter(26*2+1));
+        assertEquals("AZ", columnLettering.getLetter(26*2-1)); // first letter stepped down by force of 'c'
+
+        /**
+         * As a test, see if you can calculate by hand what solution would produce column number "GR".
+         */
     }
 
     @Test
     public void getNumber() {
-        /**
-         * The numerical notation for predicting indexes of column letters go as follows:
-         *
-         * First repetition is index 0-25 where index 0="A" and index 25="Z".
-         *
-         * All following repetitions for indexing are calculated from the first letter in second repetition 26="AA".
-         * Subsequently multiplying 26="AA" with any number will provide the amount of letters applied next to the initial "A".
-         * So ((26="AA")*3)=(78="AAAA") is like saying ("A"+"AAA"="AAAA").
-         *
-         * Traversing through the next level repetitions require addition or subtraction.
-         * Error. All indexes are simply repetitions... IE AAA not ABA like a xls spreadsheet.
-         *
-         */
+
         assertEquals(0, columnLettering.getNumber("A"));
         assertEquals(25, columnLettering.getNumber("Z"));
         assertEquals(26, columnLettering.getNumber("AA"));
-        assertEquals(26*3, columnLettering.getNumber("AAAA"));
-        assertEquals(26*3+1, columnLettering.getNumber("BBBB"));
-        assertEquals(26*4-1, columnLettering.getNumber("ZZZZ"));
-        assertDoesNotThrow(()->{columnLettering.getNumber("ZZZZZ");});
-        assertThrows(IllegalArgumentException.class, ()->{columnLettering.getNumber("ZZZZZZ");});
-        assertDoesNotThrow(()->{columnLettering.getNumber("ZZZZZZ", 6);});
+        assertEquals(26+1, columnLettering.getNumber("AB"));
+
+        assertEquals(26*3, columnLettering.getNumber("CA"));
+        assertEquals(26*3+1, columnLettering.getNumber("CB"));
+        assertEquals(26*4-1, columnLettering.getNumber("CZ"));
+
+        assertEquals(-1, columnLettering.getNumber("ZZ"));
     }
 
 }

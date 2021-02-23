@@ -1,14 +1,14 @@
 package BinaryTree.Model;
 
-public class Node {
+public class Node<T> {
     private Node root;
-    private City value;
+    private T value;
     private Node left;
     private Node right;
 
-    public Node(Node root, City city, Node left, Node right) {
+    public Node(Node root, T value, Node left, Node right) {
         this.root = root;
-        this.value = city;
+        this.value = value;
         this.left = left;
         this.right = right;
     }
@@ -17,7 +17,7 @@ public class Node {
         return root;
     }
 
-    public City getValue() {
+    public T getValue() {
         return value;
     }
 

@@ -40,12 +40,12 @@ public class ColumnLettering {
         }
     }
 
-    private int numberCounter(String letters, int stackCount, int stackLimit) {
+    private int numberCounter(String letters, int stackCount, int repetitionsLimit) {
         try {
-            while (stackCount < stackLimit) {
+            while (repetitions < repetitionsLimit) {
                 String listLetter = list.get(stackCount);
                 if (listLetter.equals(letters)) {
-                    return stackCount-repetitions;
+                    return stackCount;
                 } else {
                     stackCount += 1;
                 }
@@ -53,13 +53,16 @@ public class ColumnLettering {
         } catch (IndexOutOfBoundsException e) {
             this.repetitions += 1;
             this.generate();
-            return numberCounter(letters, stackCount, stackLimit);
+            return numberCounter(letters, stackCount, repetitionsLimit);
         }
-        throw new IllegalArgumentException("Stack limit '" + stackLimit + "' exceeded. could not find '" + letters + "' in generated columns letters.");
+        throw new IllegalArgumentException("Stack limit '" + stackCount + "' exceeded. could not find '" + letters + "' in generated columns letters. If your searched letters exceed 5 in length, try and notch the repetitionsLimit parameter.");
     }
 
     public int getNumber(String letters) {
-        return numberCounter(letters, 0, 250);
+        return numberCounter(letters, 0, 5);
     }
 
+    public int getNumber(String letters, int repetitionsLimit) {
+        return numberCounter(letters, 0, repetitionsLimit);
+    }
 }

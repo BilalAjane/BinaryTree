@@ -27,19 +27,46 @@ public class XlsParser {
         List<List<Cell>> rows = new ArrayList<>();
         List<List<Cell>> columns = new ArrayList<>();
 
-        /*
-        for (Row row: sheet) {
-            List<Cell> new_row = new ArrayList<>();
-            for (int i = 0; i < ; i++) {
-                
+        // Create Rows and Map
+        List<Cell> r = new ArrayList<>();
+        int count = 0;
+        int i = 0;
+        for (Row itRow:sheet) {
+            for (Cell cell:itRow) {
+                map.put(""+columnLettering.getLetter(cell.getColumnIndex())+(cell.getRowIndex()+1), cell);
+
+                if (cell.getColumnIndex() > i) {
+                    int j = cell.getColumnIndex() - i;
+                    for (int k = 0; k < j; k++) {
+                        r.add(null);
+                        i++;
+                    }
+                }
+
+                r.add(cell);
+                i++;
+                count++;
             }
-            for (Cell cell: row) {
-                new_row.add(cell);
-                map.put(columnLettering.getLetter(cell.getColumnIndex())+(cell.getRowIndex()+1), cell);
-            }
-            rows.add(new_row);
+            i = 0;
+            rows.add(r);
+            r = new ArrayList<>();
         }
-        */
+
+        // Create Columns
+        List<Cell> c = new ArrayList<>();
+        for (int l = 0;l <= count; l++) {
+            int j = 0;
+            while (true) {
+                try {
+                    c.add(rows.get(l).get(j));
+                    j++;
+                } catch (IndexOutOfBoundsException e) {
+                    break;
+                }
+            }
+            columns.add(c);
+            c = new ArrayList<>();
+        }
 
         return new XlsSheet(columnLettering, map, rows, columns);
     }

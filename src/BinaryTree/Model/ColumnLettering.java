@@ -58,4 +58,7 @@ public class ColumnLettering {
         return -1;
     }
 
+    public int size() {
+        return list.size();
+    }
 }

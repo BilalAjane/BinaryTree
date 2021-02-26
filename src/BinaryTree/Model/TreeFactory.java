@@ -3,7 +3,6 @@ package BinaryTree.Model;
 import BinaryTree.Data.XlsParser;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,7 +24,7 @@ public class TreeFactory {
     }
 
     private Node<City> generateFromXls(File file) throws IOException {
-        Xls xls = new XlsParser().create(file);
+        XlsSheet xlsSheet = new XlsParser().create(file, 0);
 
         // Find matrices in the sheet for models
 
@@ -34,7 +33,7 @@ public class TreeFactory {
         // Sort from list through xls data to make a tree for every model as root
 
         List<Cell> list = new ArrayList<>();
-        for (Cell cell:xls.getRow(0)) {
+        for (Cell cell: xlsSheet.getRow(0)) {
             if (!(cell==null)) {
                 System.out.println(cell);
                 list.add(cell);

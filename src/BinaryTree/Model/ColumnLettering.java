@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ColumnLettering {
     private final char[] alphabet = new char[26];
-    private List<String> list;
+    private final List<String> list;
 
     public ColumnLettering() {
         list = new ArrayList<>();
@@ -50,13 +50,11 @@ public class ColumnLettering {
     }
 
     public int getNumber(String letters) {
-
         for (int i = 0; i < list.size(); i++) {
             if (letters.equals(list.get(i))) {
                 return i;
             }
         }
-
         return -1;
     }
 
